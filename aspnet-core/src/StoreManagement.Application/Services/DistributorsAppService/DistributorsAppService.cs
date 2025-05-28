@@ -27,14 +27,14 @@ namespace StoreManagement.Services.DistributorsAppService
 		}
 
 		// Create
-		public async Task<Distributors> Create(CreateDistributorInput input)
+		public async Task Create(CreateDistributorInput input)
 		{
 			var distributor = new Distributors();
 			distributor.Name = input.Name;
 			distributor.PhoneNumber = input.PhoneNumber;
 			distributor.Email = input.Email;
 			await _repositoryDistributors.InsertAsync( distributor );
-			return distributor;
+			//return distributor;
 		}
 
 		// Get All Paging
@@ -42,7 +42,8 @@ namespace StoreManagement.Services.DistributorsAppService
 		{
 			var query = _repositoryDistributors
 				.GetAll()
-				.WhereIf(!input.Search.IsNullOrWhiteSpace(), d => d.Name.ToLower().Contains(input.Search.ToLower()));
+				.WhereIf(!input.Search.IsNullOrWhiteSpace(), d => d.Name.ToLower().Contains(input.Search.ToLower()))
+				.OrderByDescending(d => d.CreationTime);
 
 			var Count = query.Count();
 			
@@ -63,6 +64,20 @@ namespace StoreManagement.Services.DistributorsAppService
 				.ToListAsync();
 			return new PagedResultDto<DistributorsListDto>(Count, items);
 		}
+		// Get An Distributor
+		public async Task<DistributorsListDto> GetAnDistributor(int distributorId)
+		{
+			var existingDistributor = await _repositoryDistributors.FirstOrDefaultAsync(x => x.Id == distributorId);
+			var item = new DistributorsListDto
+			{
+				Id = distributorId,
+				Name = existingDistributor.Name,
+				PhoneNumber = existingDistributor.PhoneNumber,
+				Email = existingDistributor.Email,
+				CreationTime= existingDistributor.CreationTime,
+			};
+			return item;
+		}
 
 		// Update
 		public async Task<Distributors> Update(UpdateDistributorInput input)
@@ -74,5 +89,11 @@ namespace StoreManagement.Services.DistributorsAppService
 			await _repositoryDistributors.UpdateAsync(existingDistributor);
 			return existingDistributor;
 		}
+
+		// Delete
+		public async Task Delete(int distributorId)
+		{
+			await _repositoryDistributors.DeleteAsync(distributorId);
+		} 
 	}
 }

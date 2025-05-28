@@ -13,6 +13,11 @@ namespace StoreManagement.EntityFrameworkCore
 	{
 		/* Define a DbSet for each entity of the application */
 		public DbSet<Distributors> Distributors { get; set; }
+		public DbSet<Products> Products { get; set; }
+		public DbSet<Customers> Customers { get; set; }
+		public DbSet<Warehoures> Warehoures { get; set; }
+		public DbSet<Orders> Orders { get; set; }
+		public DbSet<OrderDetails> OrderDetails { get; set; }
 		public StoreManagementDbContext(DbContextOptions<StoreManagementDbContext> options)
 				: base(options)
 		{
