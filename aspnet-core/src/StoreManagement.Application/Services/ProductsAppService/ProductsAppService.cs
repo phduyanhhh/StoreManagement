@@ -98,5 +98,19 @@ namespace StoreManagement.Services.ProductsAppService
 		{
 			await _repositoryProducts.DeleteAsync(id);
 		}
+
+		//Get An
+		public async Task<ProductsListDto> GetAnById(int id)
+		{
+			var query = await _repositoryProducts.FirstOrDefaultAsync(x => x.Id == id);
+			var product = new ProductsListDto {
+				Id = id,
+				Name = query.Name,
+				Price = query.Price,
+				Quantity = query.Quantity,
+				ImageUrl = $"api/services/app/Products/GetImage?id={id}"
+			};
+			return product;
+		}
 	}
 }

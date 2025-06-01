@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using StoreManagement.Services.OrdersAppService.Dto;
 
 namespace StoreManagement.Services.OrdersAppService
@@ -11,5 +12,6 @@ namespace StoreManagement.Services.OrdersAppService
 	public interface IOrdersAppService : IApplicationService
 	{
 		Task<int> Create(CreateOrderInput input);
+		Task<PagedResultDto<OrdersListDto>> GetAll(GetAllOrdersInput input);
 	}
 }

@@ -8,6 +8,7 @@ using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StoreManagement.Entities;
 using StoreManagement.Services.CustomersAppService.Dto;
@@ -69,10 +70,12 @@ namespace StoreManagement.Services.CustomersAppService
 			await _repositoryCustomer.DeleteAsync(Id);
 		}
 		// Get An
+		[HttpGet]
 		public async Task<CustomersListDto> ExistingCustomer(int Id)
 		{
 			var existingCustomer = await _repositoryCustomer.FirstOrDefaultAsync(x => x.Id == Id);
 			var items = new CustomersListDto();
+			items.Id = Id;
 			items.Username = existingCustomer.Username;
 			items.PhoneNumber = existingCustomer.PhoneNumber;
 			items.Scores = existingCustomer.Scores;
